@@ -33,10 +33,13 @@ COPY frontend/data/ /usr/share/nginx/html/data/
 # Copy nginx configuration
 COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
 
+# Copy environment file
+COPY .env .
+
 # Copy start script
 COPY start.sh .
 RUN chmod +x start.sh
 
 # EXPOSE $FRONTEND_PORT
 
-CMD ["./start.sh"] 
+CMD ["./start.sh"]

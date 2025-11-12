@@ -69,6 +69,12 @@ API_SETTINGS = {
         'api_key': os.getenv('LOCAL_API_KEY', ''),
         'available_models': os.getenv('LOCAL_AVAILABLE_MODELS', '').split(','),
         'max_tokens': 4096,
+    },
+    'modelscope': {
+        'base_url': os.getenv('MODELSCOPE_BASE_URL', 'https://api-inference.modelscope.cn/v1'),
+        'api_key': os.getenv('MODELSCOPE_API_KEY', ''),
+        'available_models': os.getenv('MODELSCOPE_AVAILABLE_MODELS', 'MiniMax/MiniMax-M2,Qwen/Qwen3-Coder-480B-A35B-Instruct,Qwen/Qwen3-30B-A3B-Instruct-2507,Qwen/Qwen3-235B-A22B-Thinking-2507').split(','),
+        'max_tokens': 4096,
     }
 }
 

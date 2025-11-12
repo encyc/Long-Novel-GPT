@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# 加载环境变量
+if [ -f .env ]; then
+    export $(cat .env | xargs)
+fi
+
 # 设置默认值
 FRONTEND_PORT=${FRONTEND_PORT:-80}
 BACKEND_PORT=${BACKEND_PORT:-7869}

@@ -6,6 +6,7 @@ from .doubao_api import stream_chat_with_doubao, doubao_model_config
 from .chat_messages import ChatMessages
 from .openai_api import stream_chat_with_gpt, gpt_model_config
 from .zhipuai_api import stream_chat_with_zhipuai, zhipuai_model_config
+from .modelscope_api import stream_chat_with_modelscope, modelscope_model_config
 
 class ModelConfig(dict):
     def __init__(self, model: str, **options):
@@ -27,6 +28,8 @@ class ModelConfig(dict):
             check_key('豆包', ['api_key', 'endpoint_id'])
         elif self['model'] in zhipuai_model_config:
             check_key('智谱AI', ['api_key'])
+        elif self['model'] in modelscope_model_config:
+            check_key('ModelScope', ['api_key'])
         elif self['model'] in gpt_model_config or True:
             # 其他模型名默认采用openai接口调用
             check_key('OpenAI', ['api_key'])
@@ -82,6 +85,15 @@ def stream_chat(model_config: ModelConfig, messages: list, response_json=False) 
             max_tokens=model_config['max_tokens'],
             response_json=response_json
         )
+    elif model_config['model'] in modelscope_model_config:  # ModelScope models
+        result = yield from stream_chat_with_modelscope(
+            messages,
+            model=model_config['model'],
+            api_key=model_config['api_key'],
+            base_url=model_config.get('base_url', 'https://api-inference.modelscope.cn/v1'),
+            max_tokens=model_config['max_tokens'],
+            response_json=response_json
+        )
     elif model_config['model'] in gpt_model_config or True:  # openai models或其他兼容openai接口的模型
         result = yield from stream_chat_with_gpt(
             messages,
@@ -106,4 +118,4 @@ def test_stream_chat(model_config: ModelConfig):
     return response
 
 # 导出必要的函数和配置
-__all__ = ['ChatMessages', 'stream_chat', 'wenxin_model_config', 'doubao_model_config', 'gpt_model_config', 'zhipuai_model_config', 'ModelConfig']
+__all__ = ['ChatMessages', 'stream_chat', 'wenxin_model_config', 'doubao_model_config', 'gpt_model_config', 'zhipuai_model_config', 'modelscope_model_config', 'ModelConfig']
